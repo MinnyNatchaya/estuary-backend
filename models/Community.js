@@ -21,6 +21,15 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
     });
+
+    Community.hasMany(models.Notification, {
+      foreignKey: {
+        name: 'communityId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
   };
 
   return Community;

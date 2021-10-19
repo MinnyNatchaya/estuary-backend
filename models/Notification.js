@@ -1,14 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
-  const Post = sequelize.define(
-    'Post',
+  const Notification = sequelize.define(
+    'Notification',
     {
       content: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
       },
-      hashtag: {
+      isViewed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      type: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
       }
     },
     {
@@ -16,8 +21,26 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  Post.associate = models => {
-    Post.hasMany(models.PostPicture, {
+  Notification.associate = models => {
+    Notification.belongsTo(models.Following, {
+      foreignKey: {
+        name: 'followingId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+
+    Notification.belongsTo(models.Community, {
+      foreignKey: {
+        name: 'communityId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+
+    Notification.belongsTo(models.Post, {
       foreignKey: {
         name: 'postId',
         allowNull: false
@@ -26,45 +49,18 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'RESTRICT'
     });
 
-    Post.hasMany(models.Share, {
+    Notification.belongsTo(models.Comment, {
       foreignKey: {
-        name: 'postId',
+        name: 'commentId',
         allowNull: false
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
     });
 
-    Post.hasMany(models.Like, {
+    Notification.belongsTo(models.SubComment, {
       foreignKey: {
-        name: 'postId',
-        allowNull: false
-      },
-      onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
-    });
-
-    Post.belongsTo(models.User, {
-      foreignKey: {
-        name: 'userId',
-        allowNull: false
-      },
-      onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
-    });
-
-    Post.hasMany(models.Comment, {
-      foreignKey: {
-        name: 'postId',
-        allowNull: false
-      },
-      onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
-    });
-
-    Post.hasMany(models.Notification, {
-      foreignKey: {
-        name: 'postId',
+        name: 'subCommentId',
         allowNull: false
       },
       onDelete: 'RESTRICT',
@@ -72,5 +68,5 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  return Post;
+  return Notification;
 };

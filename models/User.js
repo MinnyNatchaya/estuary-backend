@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true
       },
       birthDate: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
         allowNull: true
       },
       address: {
@@ -113,6 +113,25 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: {
         name: 'userId',
         allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+
+    User.hasMany(models.Following, {
+      as: 'follower',
+      foreignKey: {
+        name: 'followerId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+    User.hasMany(models.Following, {
+      as: 'followed',
+      foreignKey: {
+        name: 'followedId',
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'

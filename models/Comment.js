@@ -48,6 +48,15 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
     });
+
+    Comment.hasMany(models.Notification, {
+      foreignKey: {
+        name: 'commentId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
   };
 
   return Comment;
