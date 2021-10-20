@@ -1,8 +1,9 @@
-const router = require('express').Router();
-const { authenticate } = require('../controller/authController');
-const profileController = require('../controller/profileController');
+const router = require("express").Router();
+const passport = require("passport");
 
-router.get('/:id', authenticate, profileController.getProfileById);
-router.put('/:id', authenticate, profileController.updateProfile);
+const profileController = require("../controller/profileController");
+
+router.get("/:id", passport.authenticate("jwt", { session: false }), profileController.getProfileById);
+router.put("/:id", passport.authenticate("jwt", { session: false }), profileController.updateProfile);
 
 module.exports = router;
