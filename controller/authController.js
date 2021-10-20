@@ -56,12 +56,12 @@ exports.login = async (req, res, next) => {
 		const { username, password } = req.body;
 		const user = await User.findOne({ where: { username: username } });
 		if (!user) {
-			return res.status(400).json({ messageUsername: "Incorrect username or password" });
+			return res.status(400).json({ message: "Incorrect username or password", name: "loginError" });
 		}
 
 		const isPasswordCorrect = await bcrypt.compare(password, user.password);
 		if (!isPasswordCorrect) {
-			return res.status(400).json({ messagePassword: "Incorrect username or password" });
+			return res.status(400).json({ message: "Incorrect username or password", name: "loginError" });
 		}
 
 		const payload = {
