@@ -32,21 +32,18 @@ exports.authenticate = async (req, res, next) => {
   }
 };
 
-exports.register = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
   try {
-    const { firstName, lastName, username, password, birthDate, address, phone, profilePic, bannerPic, role } =
-      req.body;
+    const { username, password, confirmPassword, email, birthDate, role } = req.body;
+    if (password !== confirmPassword) {
+      throw new CustomError('password and confirm password did not match', 400);
+    }
     const hasedPassword = await bcrypt.hash(password, 10);
     await User.create({
-      firstName,
-      lastName,
       username,
       password: hasedPassword,
+      email,
       birthDate,
-      address,
-      phone,
-      profilePic,
-      bannerPic,
       role: 'CLIENT'
     });
     res.status(200).json({ message: 'Your account has been created' });

@@ -8,11 +8,13 @@ const cors = require('cors');
 
 const errorController = require('./controller/errorController');
 
+const profileRoute = require('./routes/profileRoute');
 const authRoute = require('./routes/authRoute');
 
 app.use(cors());
 app.use(express.json());
 
+app.use('/profile', profileRoute);
 app.use('/', authRoute);
 
 app.use((req, res, next) => {
