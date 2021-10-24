@@ -42,6 +42,15 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'RESTRICT'
     });
 
+    Product.belongsTo(models.User, {
+      foreignKey: {
+        name: 'userId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+
     Product.hasMany(models.ProductTag, {
       foreignKey: {
         name: 'productId',

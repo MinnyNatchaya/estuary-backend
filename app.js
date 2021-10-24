@@ -8,6 +8,7 @@ const cors = require('cors');
 
 const errorController = require('./controller/errorController');
 
+const postRoute = require('./routes/postRoute');
 const profileRoute = require('./routes/profileRoute');
 const authRoute = require('./routes/authRoute');
 
@@ -18,6 +19,7 @@ app.use(passport.initialize());
 app.use(cors());
 app.use(express.json());
 
+app.use('/post', postRoute);
 app.use('/profile', profileRoute);
 app.use('/', authRoute);
 
