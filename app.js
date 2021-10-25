@@ -20,12 +20,9 @@ app.use(cors());
 app.use(express.json());
 
 //////////////////omise/////////////////////////////////////
+const omiseRoute = require('./routes/omiseRoute');
 
-// let omise = require('omise')({
-//   publicKey: process.env.OMISE_PUBLIC_KEY,
-//   secretKay: process.env.OMISE_SECRET_KEY
-// });
-// app.post('/checkout-credit-card', (req, res, next) => {});
+app.use('/checkout-credit-card', omiseRoute);
 
 ///////////////////////////////////////////////////////
 
