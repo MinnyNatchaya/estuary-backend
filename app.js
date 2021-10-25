@@ -19,6 +19,16 @@ app.use(passport.initialize());
 app.use(cors());
 app.use(express.json());
 
+//////////////////omise/////////////////////////////////////
+
+// let omise = require('omise')({
+//   publicKey: process.env.OMISE_PUBLIC_KEY,
+//   secretKay: process.env.OMISE_SECRET_KEY
+// });
+// app.post('/checkout-credit-card', (req, res, next) => {});
+
+///////////////////////////////////////////////////////
+
 app.use('/post', postRoute);
 app.use('/profile', profileRoute);
 app.use('/', authRoute);

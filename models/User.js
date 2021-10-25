@@ -48,6 +48,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
+      wallet: {
+        type: DataTypes.DECIMAL(15, 2),
+        allowNull: false,
+        defaultValue: 0
+      },
       role: {
         type: DataTypes.ENUM('CLIENT', 'ADMIN'),
         allowNull: false,
