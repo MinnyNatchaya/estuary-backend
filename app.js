@@ -8,6 +8,7 @@ const cors = require('cors');
 
 const errorController = require('./controller/errorController');
 
+const productRoute = require('./routes/productRoute');
 const postRoute = require('./routes/postRoute');
 const profileRoute = require('./routes/profileRoute');
 const authRoute = require('./routes/authRoute');
@@ -25,6 +26,7 @@ app.use('/checkout-credit-card', omiseRoute);
 
 ///////////////////////////////////////////////////////
 
+app.use('/product', productRoute);
 app.use('/post', postRoute);
 app.use('/profile', profileRoute);
 app.use('/', authRoute);
