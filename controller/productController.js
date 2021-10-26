@@ -1,9 +1,12 @@
 const util = require("util");
 const cloudinary = require("cloudinary").v2;
-const Product = require("../models");
-const ProductCategory = require("../models");
+const fs = require("fs");
+const uploadPromise = util.promisify(cloudinary.uploader.upload);
+const { Product } = require("../models");
+const { ProductCategory } = require("../models");
 
 exports.getAllProducts = async (req, res, next) => {
+  console.log(Product);
   try {
     const products = await Product.findAll({
       include: {
@@ -29,9 +32,8 @@ exports.getProductById = async (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
   try {
-    // 1. รับ req ที่ส่งเข้ามาทาง  body
     console.log(req.body);
-    // destructuring obj data จาก req ในส่วน body
+
     const {
       coverPic,
       name,
@@ -41,9 +43,9 @@ exports.createProduct = async (req, res, next) => {
       hashtag,
       categoryId,
     } = req.body;
-    //ใช้คำสั่ง squelize สร้างสินค้าลงใน DB
-    const result = await uploadPromise(req.file.path, { timeout: 2000000 });
 
+    const result = await uploadPromise(req.file.path, { timeout: 2000000 });
+    console.log("ssssssss");
     const product = await Product.create({
       name,
       externalLink,
@@ -51,11 +53,11 @@ exports.createProduct = async (req, res, next) => {
       price,
       hashtag,
       coverPic: result.secure_url,
-
       categoryId: categoryId,
+      userId: 1,
     });
-    console.log(picurl);
-    res.status(201).json({ product });
+
+    res.status(201).json(product);
   } catch (err) {
     next(err);
   }
