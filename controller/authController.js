@@ -63,11 +63,13 @@ exports.login = async (req, res, next) => {
 		if (!isPasswordCorrect) {
 			return res.status(400).json({ message: "Incorrect username or password", name: "loginError" });
 		}
+		console.log(JSON.stringify(user, null, 2));
 
 		const payload = {
 			id: user.id,
 			username: user.username,
 			role: user.role,
+			profilePic: user.profilePic,
 		};
 		const secretKey = process.env.JWT_SECRET_KEY;
 		const token = jwt.sign(payload, secretKey, { expiresIn: 60 * 60 * 24 });

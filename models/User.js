@@ -60,18 +60,19 @@ module.exports = (sequelize, DataTypes) => {
 	);
 
 	User.associate = (models) => {
-		User.hasMany(models.ChatRoom, {
+		User.hasMany(models.Chatlog, {
 			foreignKey: {
-				name: "userId",
+				name: "senderId",
 				allowNull: false,
 			},
 			onDelete: "RESTRICT",
 			onUpdate: "RESTRICT",
 		});
 		User.hasMany(models.Chatlog, {
+			as: "receiver",
 			foreignKey: {
-				name: "userId",
-				allowNull: false,
+				name: "receiverId",
+				// allowNull: false,
 			},
 			onDelete: "RESTRICT",
 			onUpdate: "RESTRICT",
