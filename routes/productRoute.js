@@ -1,20 +1,23 @@
-const express = require("express");
-const productController = require("../controller/productController");
-const { upload } = require("../middleware/uploadFile");
+const express = require('express');
+const productController = require('../controller/productController');
+const { upload } = require('../middleware/uploadFile');
 const router = express.Router();
+const passport = require('passport');
 
-router.get("/", authenticate, productController.getAllProducts);
-router.get("/:id", authenticate, productController.getProductById);
+router.get('/', passport.authenticate('jwt', { session: false }), productController.getAllProducts);
+router.get('/:id', passport.authenticate('jwt', { session: false }), productController.getProductById);
 router.post(
-  "/",
-  authenticate,
-  upload.single("coverPic"),
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  upload.single('coverPic'),
   productController.createProduct
 );
 router.put(
-  "/:id",
-  authenticate,
-  upload.single("coverPic"),
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  upload.single('coverPic'),
   productController.updateProduct
 );
-router.delete("/:id", authenticate, productController.deleteProduct);
+router.delete('/:id', passport.authenticate('jwt', { session: false }), productController.deleteProduct);
+
+module.exports = router;
