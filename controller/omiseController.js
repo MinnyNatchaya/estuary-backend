@@ -19,7 +19,8 @@ exports.createCreditCard = async (req, res, next) => {
     // });
 
     const charge = await omise.charges.create({
-      amount: amount,
+      amount: amount * 10000,
+
       currency: 'thb',
       //   customer: customer.id,
       card: token,
@@ -29,7 +30,7 @@ exports.createCreditCard = async (req, res, next) => {
     if (charge.status === 'successful') {
       const [rows] = await User.update(
         {
-          wallet: amount + wallet
+          wallet: +amount + +wallet
         },
         {
           where: { id: req.user.id }
@@ -37,9 +38,9 @@ exports.createCreditCard = async (req, res, next) => {
       );
 
       if (rows === 0) {
-        return res.status(400).json({ message: 'fail to payment' });
+        return res.status(400).json({ message: 'fail  top-up' });
       }
-      res.status(200).json({ message: 'success payment' });
+      res.status(200).json({ message: 'success top-up' });
     }
 
     // res.json({ charge });
