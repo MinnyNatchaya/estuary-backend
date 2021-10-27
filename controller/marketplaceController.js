@@ -1,25 +1,56 @@
-const { Product, User, ProductCategory, Like, Share } = require("../models");
+const { Product, User, ProductCategory, Like, Share, Following, sequelize } = require("../models");
 
 exports.getTrendingCreators = async (req, res, next) => {
 	try {
 		const result = await User.findAll({
+			attributes: ["id", "username", "profilePic"],
+			// attributes: { include: [[sequelize.fn("COUNT", sequelize.col("Followers.follower_id")), "followerCOunt"]] },
+
 			include: [
 				{
 					model: Product,
-					attributes: ["id", "coverPic"],
+					attributes: ["id", "coverPic", "createdAt", "name"],
+					// limit: 1,
+					// order: [["createdAt", "DESC"]],
+					// attributes: [[sequelize.fn("count", sequelize.col("Products.user_id")), "productCount"]],
+				},
+				{
+					model: Following,
+					as: "followed",
+					attributes: ["id"],
 					include: [
 						{
-							model: Like,
-							attributes: ["id", "userId", "productId"],
-						},
-						{
-							model: Share,
-							attributes: ["id", "userId", "productId"],
+							model: User,
+							as: "follower",
+							attributes: ["id", "username"],
 						},
 					],
 				},
 			],
+			// group: ["User.id"],
+
+			// order: [[sequelize.fn("count", sequelize.col("Products.user_id")), "DESC"]],
+			order: [[Product, "createdAt", "DESC"]],
 		});
+		// const sortedUserWithProductByFollowerCount = result.filter((item, idx) => {
+		// 	// const limited = item.filter(elem=>elem.Products.length !== 0)
+		// 	return item.filter((elem) => elem.Products.length !== 0)[0];
+		// });
+		const sortedUserWithProductByFollowerCount = JSON.parse(JSON.stringify(result))
+			.filter((item, idx) => item.Products.length !== 0)
+			.map((item) => ({ ...item, Products: item.Products[0], followerCount: item.followed.length }));
+
+		function sortByFollowerCount(a, b) {
+			if (a.followerCount < b.followerCount) {
+				return 1;
+			}
+			if (a.followerCount > b.followerCount) {
+				return -1;
+			}
+			return 0;
+		}
+
+		res.send({ trendingCreators: sortedUserWithProductByFollowerCount.sort(sortByFollowerCount) });
 	} catch (err) {
 		next(err);
 	}
@@ -28,11 +59,11 @@ exports.getTrendingCreators = async (req, res, next) => {
 exports.getAllProducts = async (req, res, next) => {
 	try {
 		const allProducts = await Product.findAll({
-			attributes: { exclude: ["updatedAt"] },
+			attributes: { exclude: ["updatedAt", "externalLink", "userId"] },
 			include: [
 				{
 					model: User,
-					attributes: ["id", "usernme", "profilePic"],
+					attributes: ["id", "username", "profilePic"],
 				},
 				{
 					model: Like,
@@ -44,14 +75,16 @@ exports.getAllProducts = async (req, res, next) => {
 				},
 			],
 		});
+		// res.send({ allProducts });
+		const parsed = JSON.parse(JSON.stringify(allProducts));
 
-		// res.send({
-		//     allProducts: allProducts.map(item=>(
-		//         {
-
-		//         }
-		//     ))
-		// })
+		res.send({
+			allProducts: parsed.map((item) => ({
+				...item,
+				Likes: item.Likes.length,
+				Shares: item.Shares.length,
+			})),
+		});
 	} catch (err) {
 		next(err);
 	}
