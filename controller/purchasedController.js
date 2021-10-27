@@ -1,9 +1,11 @@
 const { Purchased } = require('../models');
 const { User } = require('../models');
 
-exports.getAllPurchasedByUserLogin = async (req, res, next) => {
+exports.getPurchasedById = async (req, res, next) => {
+  const { id } = req.params;
+
   try {
-    const purchased = await Purchased.findAll({ where: { userId: req.user.id } });
+    const purchased = await Purchased.findAll({ where: { productId: id } });
     res.json({ purchased });
   } catch (err) {
     next(err);
@@ -13,16 +15,23 @@ exports.getAllPurchasedByUserLogin = async (req, res, next) => {
 exports.createPurchased = async (req, res, next) => {
   try {
     const { productId, price, userId, wallet } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     await Purchased.create({
       productId: productId,
       userId: userId
     });
 
-    await User.update({
-      wallet: +wallet - +price
-    });
+    const sum = +wallet - +price;
+    console.log(sum);
+    await User.update(
+      {
+        wallet: sum
+      },
+      {
+        where: { id: req.user.id }
+      }
+    );
 
     res.status(200).json({ message: 'Purchased has been created' });
   } catch (err) {

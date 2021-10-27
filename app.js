@@ -8,6 +8,8 @@ const cors = require('cors');
 
 const errorController = require('./controller/errorController');
 
+const followingRoute = require('./routes/followingRoute');
+const likeRoute = require('./routes/likeRoute');
 const purchasedRoute = require('./routes/purchasedRoute');
 const productCategoryRoute = require('./routes/productCategoryRoute');
 const productRoute = require('./routes/productRoute');
@@ -28,6 +30,8 @@ app.use('/checkout-credit-card', omiseRoute);
 
 ///////////////////////////////////////////////////////
 
+app.use('/following', followingRoute);
+app.use('/like', likeRoute);
 app.use('/purchased', purchasedRoute);
 app.use('/category', productCategoryRoute);
 app.use('/product', productRoute);

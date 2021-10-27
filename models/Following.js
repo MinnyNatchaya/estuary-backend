@@ -1,7 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   const Following = sequelize.define(
     'Following',
-    {},
+    {
+      status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      }
+    },
     {
       underscored: true
     }
