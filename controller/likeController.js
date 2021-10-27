@@ -39,11 +39,11 @@ exports.createLike = async (req, res, next) => {
 exports.updateLike = async (req, res, next) => {
   try {
     const { id } = req.params;
-    // const { isSubscribed } = req.body;
+    const { isLiked } = req.body;
 
     const [rows] = await Like.update(
       {
-        // status: isSubscribed
+        status: isLiked
       },
       {
         where: { id, userId: req.user.id }
