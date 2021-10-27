@@ -7,13 +7,24 @@ const { User } = require('../models');
 const { ProductCategory } = require('../models');
 
 exports.getAllProducts = async (req, res, next) => {
-  console.log(Product);
   try {
     const products = await Product.findAll({
       include: {
         model: ProductCategory,
         require: true
       }
+    });
+    res.json({ products });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getProductsByUserId = async (req, res, next) => {
+  try {
+    const products = await Product.findAll({
+      where: { userId: req.params.id },
+      order: [['id', 'DESC']]
     });
     res.json({ products });
   } catch (err) {
