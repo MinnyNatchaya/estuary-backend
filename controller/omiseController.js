@@ -19,7 +19,7 @@ exports.createCreditCard = async (req, res, next) => {
     // });
 
     const charge = await omise.charges.create({
-      amount: amount * 10000,
+      amount: amount * 100,
 
       currency: 'thb',
       //   customer: customer.id,

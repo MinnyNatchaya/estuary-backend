@@ -11,7 +11,10 @@ const cors = require("cors");
 const { socketConnection } = require("./utils/socket-io");
 
 const errorController = require("./controller/errorController");
-
+const followingRoute = require("./routes/followingRoute");
+const likeRoute = require("./routes/likeRoute");
+const purchasedRoute = require("./routes/purchasedRoute");
+const productCategoryRoute = require("./routes/productCategoryRoute");
 const userRoute = require("./routes/userRoute");
 const chatRoute = require("./routes/chatRoute");
 const productRoute = require("./routes/productRoute");
@@ -31,6 +34,10 @@ const omiseRoute = require("./routes/omiseRoute");
 app.use("/checkout-credit-card", omiseRoute);
 
 ///////////////////////////////////////////////////////
+app.use("/following", followingRoute);
+app.use("/like", likeRoute);
+app.use("/purchased", purchasedRoute);
+app.use("/category", productCategoryRoute);
 app.use("/chat", chatRoute);
 app.use("/product", productRoute);
 app.use("/post", postRoute);
