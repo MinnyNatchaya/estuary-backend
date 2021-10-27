@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.STRING,
 				allowNull: true,
 			},
+			description: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
 		},
 		{
 			underscored: true,
@@ -38,6 +42,14 @@ module.exports = (sequelize, DataTypes) => {
 			foreignKey: {
 				name: "communityId",
 				allowNull: false,
+			},
+			onDelete: "RESTRICT",
+			onUpdate: "RESTRICT",
+		});
+		Community.hasMany(models.Post, {
+			foreignKey: {
+				name: "communityId",
+				allowNull: true,
 			},
 			onDelete: "RESTRICT",
 			onUpdate: "RESTRICT",

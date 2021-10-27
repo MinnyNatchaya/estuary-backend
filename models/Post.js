@@ -53,6 +53,15 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'RESTRICT'
     });
 
+    Post.belongsTo(models.Community, {
+      foreignKey: {
+        name: 'communityId',
+        allowNull: true
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+
     Post.hasMany(models.Comment, {
       foreignKey: {
         name: 'postId',

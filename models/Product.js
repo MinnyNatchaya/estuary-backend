@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true
       },
       price: {
-        type: DataTypes.STRING,
+        type: DataTypes.DECIMAL(15, 2),
         allowNull: false
       },
       hashtag: {
@@ -36,6 +36,15 @@ module.exports = (sequelize, DataTypes) => {
     Product.belongsTo(models.ProductCategory, {
       foreignKey: {
         name: 'categoryId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+
+    Product.belongsTo(models.User, {
+      foreignKey: {
+        name: 'userId',
         allowNull: false
       },
       onDelete: 'RESTRICT',

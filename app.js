@@ -12,10 +12,12 @@ const { socketConnection } = require("./utils/socket-io");
 
 const errorController = require("./controller/errorController");
 
+const userRoute = require("./routes/userRoute");
 const chatRoute = require("./routes/chatRoute");
+const productRoute = require("./routes/productRoute");
+const postRoute = require("./routes/postRoute");
 const profileRoute = require("./routes/profileRoute");
 const authRoute = require("./routes/authRoute");
-const userRoute = require("./routes/userRoute");
 
 const passport = require("passport");
 require("./config/passport");
@@ -24,7 +26,14 @@ app.use(passport.initialize());
 app.use(cors());
 app.use(express.json());
 
+//////////////////omise/////////////////////////////////////
+const omiseRoute = require("./routes/omiseRoute");
+app.use("/checkout-credit-card", omiseRoute);
+
+///////////////////////////////////////////////////////
 app.use("/chat", chatRoute);
+app.use("/product", productRoute);
+app.use("/post", postRoute);
 app.use("/profile", profileRoute);
 app.use("/user", userRoute);
 app.use("/", authRoute);
