@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
 		Community.hasMany(models.Notification, {
 			foreignKey: {
 				name: "communityId",
-				allowNull: false,
+				allowNull: true,
 			},
 			onDelete: "RESTRICT",
 			onUpdate: "RESTRICT",

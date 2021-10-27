@@ -159,12 +159,20 @@ module.exports = (sequelize, DataTypes) => {
 			as: "followed",
 			foreignKey: {
 				name: "followedId",
-				allowNull: true,
+				allowNull: false,
 			},
 			onDelete: "RESTRICT",
 			onUpdate: "RESTRICT",
 		});
 		User.hasMany(models.Purchased, {
+			foreignKey: {
+				name: "userId",
+				allowNull: false,
+			},
+			onDelete: "RESTRICT",
+			onUpdate: "RESTRICT",
+		});
+		User.hasMany(models.Notification, {
 			foreignKey: {
 				name: "userId",
 				allowNull: false,

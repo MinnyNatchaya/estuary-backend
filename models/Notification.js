@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     Notification.belongsTo(models.Following, {
       foreignKey: {
         name: 'followingId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     Notification.belongsTo(models.Community, {
       foreignKey: {
         name: 'communityId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     Notification.belongsTo(models.Post, {
       foreignKey: {
         name: 'postId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     Notification.belongsTo(models.Comment, {
       foreignKey: {
         name: 'commentId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -61,6 +61,15 @@ module.exports = (sequelize, DataTypes) => {
     Notification.belongsTo(models.SubComment, {
       foreignKey: {
         name: 'subCommentId',
+        allowNull: true
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+
+    Notification.belongsTo(models.User, {
+      foreignKey: {
+        name: 'userId',
         allowNull: false
       },
       onDelete: 'RESTRICT',

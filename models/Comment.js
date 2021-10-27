@@ -20,14 +20,14 @@ module.exports = (sequelize, DataTypes) => {
     Comment.belongsTo(models.Product, {
       foreignKey: {
         name: 'productId',
-        allowNull: false
+        allowNull: true
       }
     });
 
     Comment.belongsTo(models.Post, {
       foreignKey: {
         name: 'postId',
-        allowNull: false
+        allowNull: true
       }
     });
 
@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     Comment.hasMany(models.Notification, {
       foreignKey: {
         name: 'commentId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'

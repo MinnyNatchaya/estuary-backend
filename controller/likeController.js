@@ -1,8 +1,19 @@
 const { Like } = require('../models');
 
-exports.getLikeById = async (req, res, next) => {
+exports.getLikeByProductId = async (req, res, next) => {
   try {
-    const like = await Like.findAll({ where: { userId: req.user.id } });
+    const { id } = req.params;
+    const like = await Like.findAll({ where: { productId: id } });
+    res.json({ like });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getLikeByPostId = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const like = await Like.findAll({ where: { postId: id } });
     res.json({ like });
   } catch (err) {
     next(err);
@@ -11,23 +22,53 @@ exports.getLikeById = async (req, res, next) => {
 
 exports.createLike = async (req, res, next) => {
   try {
-    // const { productId, price, userId, wallet } = req.body;
-    // // console.log(req.body);
-    // await Purchased.create({
-    //   productId: productId,
-    //   userId: userId
-    // });
-    // const sum = +wallet - +price;
-    // console.log(sum);
-    // await User.update(
-    //   {
-    //     wallet: sum
-    //   },
-    //   {
-    //     where: { id: req.user.id }
-    //   }
-    // );
-    // res.status(200).json({ message: 'Purchased has been created' });
+    const { postId, productId } = req.body;
+
+    await Like.create({
+      userId: req.user.id,
+      postId: postId ? postId : undefined,
+      productId: productId ? productId : undefined
+    });
+
+    res.status(200).json({ message: 'Like has been created' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateLike = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    // const { isSubscribed } = req.body;
+
+    const [rows] = await Like.update(
+      {
+        // status: isSubscribed
+      },
+      {
+        where: { id, userId: req.user.id }
+      }
+    );
+    if (rows === 0) {
+      return res.status(400).json({ message: 'Fail to update Like' });
+    }
+    res.status(200).json({ message: 'Like has been updated' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteLike = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const rows = await Like.destroy({
+      where: { id, userId: req.user.id }
+    });
+    if (rows === 0) {
+      return res.status(400).json({ message: 'Fail to delete Like' });
+    }
+    res.status(200).json({ message: 'Like has been created' });
   } catch (err) {
     next(err);
   }
