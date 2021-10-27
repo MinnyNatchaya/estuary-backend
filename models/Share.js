@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     Share.belongsTo(models.Post, {
       foreignKey: {
         name: 'postId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     Share.belongsTo(models.Product, {
       foreignKey: {
         name: 'productId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'

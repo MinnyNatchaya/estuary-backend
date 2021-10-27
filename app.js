@@ -1,4 +1,4 @@
-// const { sequelize } = require("./models");
+// const { sequelize } = require('./models');
 // sequelize.sync({ force: true });
 
 require('dotenv').config();

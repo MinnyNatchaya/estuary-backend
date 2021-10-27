@@ -1,8 +1,19 @@
 const { Following } = require('../models');
 
-exports.getFollowingById = async (req, res, next) => {
+exports.getFollowedById = async (req, res, next) => {
   try {
-    const following = await Following.findAll({ where: { followerId: req.user.id } });
+    const { id } = req.params;
+    const following = await Following.findAll({ where: { followedId: id } });
+    res.json({ following });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getFollowerById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const following = await Following.findAll({ where: { followerId: id } });
     res.json({ following });
   } catch (err) {
     next(err);
@@ -28,12 +39,11 @@ exports.createFollowing = async (req, res, next) => {
 exports.updateFollowing = async (req, res, next) => {
   try {
     const { id } = req.params;
-    // const { followedId } = req.body;
+    const { isSubscribed } = req.body;
 
     const [rows] = await Following.update(
       {
-        // followedId
-        status: false
+        status: isSubscribed
       },
       {
         where: { id, followerId: req.user.id }

@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
     Product.hasMany(models.Comment, {
       foreignKey: {
         name: 'productId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -72,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
     Product.hasMany(models.Share, {
       foreignKey: {
         name: 'productId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -81,7 +81,7 @@ module.exports = (sequelize, DataTypes) => {
     Product.hasMany(models.Like, {
       foreignKey: {
         name: 'productId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'

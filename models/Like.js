@@ -1,7 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   const Like = sequelize.define(
     'Like',
-    {},
+    {
+      status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      }
+    },
     {
       underscored: true
     }
@@ -20,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     Like.belongsTo(models.Post, {
       foreignKey: {
         name: 'postId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -29,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     Like.belongsTo(models.Product, {
       foreignKey: {
         name: 'productId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
