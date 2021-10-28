@@ -27,7 +27,8 @@ exports.createLike = async (req, res, next) => {
     await Like.create({
       userId: req.user.id,
       postId: postId ? postId : undefined,
-      productId: productId ? productId : undefined
+      productId: productId ? productId : undefined,
+      status: true
     });
 
     res.status(200).json({ message: 'Like has been created' });
