@@ -67,7 +67,7 @@ exports.getAllProducts = async (req, res, next) => {
 				},
 				{
 					model: Like,
-					attributes: ["id", "userId", "productId"],
+					attributes: ["id", "status", "userId", "productId"],
 				},
 				{
 					model: Share,
@@ -81,10 +81,24 @@ exports.getAllProducts = async (req, res, next) => {
 		res.send({
 			allProducts: parsed.map((item) => ({
 				...item,
-				Likes: item.Likes.length,
+				usersLiked: item.Likes,
+				Likes: item.Likes.filter((item) => item.status === true).length,
 				Shares: item.Shares.length,
 			})),
 		});
+	} catch (err) {
+		next(err);
+	}
+};
+
+exports.getUsersLikedByproductId = async (req, res, next) => {
+	try {
+		const { productId } = req.params;
+		const usersLiked = await Like.findAll({
+			where: { productId },
+			attributes: ["id", "status", "userId", "productId"],
+		});
+		res.send({ usersLiked });
 	} catch (err) {
 		next(err);
 	}

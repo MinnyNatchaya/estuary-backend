@@ -23,6 +23,7 @@ const profileRoute = require("./routes/profileRoute");
 const authRoute = require("./routes/authRoute");
 const marketplaceRoute = require("./routes/marketplaceRoute");
 const sidebarRoute = require("./routes/sidebarRoute");
+const headerRoute = require("./routes/headerRoute");
 
 const passport = require("passport");
 require("./config/passport");
@@ -36,6 +37,7 @@ const omiseRoute = require("./routes/omiseRoute");
 app.use("/checkout-credit-card", omiseRoute);
 
 ///////////////////////////////////////////////////////
+app.use("/header", headerRoute);
 app.use("/sidebar", sidebarRoute);
 app.use("/marketplace", marketplaceRoute);
 app.use("/following", followingRoute);

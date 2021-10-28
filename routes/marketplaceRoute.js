@@ -4,6 +4,7 @@ const marketplaceController = require("../controller/marketplaceController");
 
 // passport.authenticate("jwt", { session: false })
 
+router.get("/likesbyproduct/:productId", marketplaceController.getUsersLikedByproductId);
 router.get("/trending", marketplaceController.getTrendingCreators);
 router.get("/all", marketplaceController.getAllProducts);
 
