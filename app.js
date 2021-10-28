@@ -1,5 +1,5 @@
-// const { sequelize } = require("./models");
-// sequelize.sync({ force: true });
+// const { sequelize } = require('./models');
+// sequelize.sync({ alter: true });
 
 require("dotenv").config();
 const express = require("express");
@@ -24,6 +24,7 @@ const authRoute = require("./routes/authRoute");
 const marketplaceRoute = require("./routes/marketplaceRoute");
 const sidebarRoute = require("./routes/sidebarRoute");
 const headerRoute = require("./routes/headerRoute");
+const rankRoute = require("./routes/rankRoute");
 
 const passport = require("passport");
 require("./config/passport");
@@ -37,6 +38,7 @@ const omiseRoute = require("./routes/omiseRoute");
 app.use("/checkout-credit-card", omiseRoute);
 
 ///////////////////////////////////////////////////////
+app.use("/rank", rankRoute);
 app.use("/header", headerRoute);
 app.use("/sidebar", sidebarRoute);
 app.use("/marketplace", marketplaceRoute);

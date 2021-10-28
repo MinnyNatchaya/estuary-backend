@@ -7,13 +7,24 @@ const { User } = require('../models');
 const { ProductCategory } = require('../models');
 
 exports.getAllProducts = async (req, res, next) => {
-  console.log(Product);
   try {
     const products = await Product.findAll({
       include: {
         model: ProductCategory,
         require: true
       }
+    });
+    res.json({ products });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getProductsByUserId = async (req, res, next) => {
+  try {
+    const products = await Product.findAll({
+      where: { userId: req.params.id },
+      order: [['id', 'DESC']]
     });
     res.json({ products });
   } catch (err) {
@@ -71,13 +82,18 @@ exports.createProduct = async (req, res, next) => {
 };
 
 exports.updateProduct = async (req, res, next) => {
+  console.log(req.body);
+
   try {
     const { id } = req.params;
     const { coverPic, name, externalLink, description, price, hashtag, categoryId } = req.body;
     //destructuring array index 0
+    console.log(req.file, "yyyy");
+    const result = await uploadPromise(req.file.path, { timeout: 2000000 });
+
     const [rows] = await Product.update(
       {
-        coverPic,
+        coverPic: result.secure_url,
         name,
         externalLink,
         description,
@@ -106,7 +122,8 @@ exports.deleteProduct = async (req, res, next) => {
     const { id } = req.params;
     const rows = await Product.destroy({
       where: {
-        id
+        id,
+        userId: req.uer.id
       }
     });
 
