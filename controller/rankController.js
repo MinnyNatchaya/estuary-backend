@@ -1,6 +1,7 @@
 const { User } = require('../models');
 const { Like } = require('../models');
 const { Product } = require('../models');
+const { Op } = require('sequelize');
 
 exports.getAllUserRankFilterByLike = async (req, res, next) => {
   try {
@@ -10,11 +11,11 @@ exports.getAllUserRankFilterByLike = async (req, res, next) => {
       include: [
         {
           model: Product,
-          attributes: ['id', 'status', 'createdAt'],
+          attributes: ['id', 'createdAt'],
 
           include: {
             model: Like,
-            attributes: ['productId']
+            attributes: ['productId', 'status']
           }
         }
       ],
@@ -100,13 +101,25 @@ exports.getAllUserRankFilterByLikeCategoryId = async (req, res, next) => {
 
 exports.getAllUserFilterByDateProduct = async (req, res, next) => {
   try {
+    const dateNow = new Date();
+    const sevenDate = new Date(dateNow.getTime() - 7 * 24 * 60 * 60 * 1000);
+
     console.dir(req.params.id);
     const rank = await User.findAll({
       attributes: ['id', 'username', 'profilePic'],
 
       include: [
         {
-          where: { categoryId: req.params.id },
+          where: {
+            categoryId: req.params.id,
+            [Op.or]: [
+              {
+                createdAt: {
+                  [Op.between]: [sevenDate, dateNow]
+                }
+              }
+            ]
+          },
           model: Product,
           attributes: ['id', 'createdAt'],
 
@@ -119,43 +132,7 @@ exports.getAllUserFilterByDateProduct = async (req, res, next) => {
       limit: 10
     });
 
-    const getNumberOfDays = (start, end) => {
-      const date1 = new Date(start);
-      const date2 = new Date(end);
-
-      // One day in milliseconds
-      const oneDay = 1000 * 60 * 60 * 24;
-
-      // Calculating the time difference between two dates
-      const diffInTime = date2.getTime() - date1.getTime();
-
-      // Calculating the no. of days between two dates
-      const diffInDays = Math.round(diffInTime / oneDay);
-
-      return diffInDays;
-    };
-
-    const formatShortMonthShortYear = date => {
-      return new Intl.DateTimeFormat('en-US').format(date);
-    };
-
-    const dateNow = formatShortMonthShortYear(Date.now());
-
-    const result = JSON.parse(JSON.stringify(rank)).filter(item =>
-      item.Products.filter(elem => {
-        getNumberOfDays(formatShortMonthShortYear(new Date(elem.createdAt)), dateNow) <= 7;
-        // console.log(getNumberOfDays(formatShortMonthShortYear(new Date(elem.createdAt)), dateNow));
-      })
-    );
-
-    // const a = [
-    //   { e: 1, r: [{ g: 2, f: 10 }] },
-    //   { e: 5, r: [{ g: 2, f: 3 }] }
-    // ];
-    // const b = a.filter(item => item.r.filter(e => e.f > 7));
-    // console.log(b);
-
-    const result2 = JSON.parse(JSON.stringify(result)).map(item => {
+    const result = JSON.parse(JSON.stringify(rank)).map(item => {
       let countLike = 0;
       item.Products.forEach(elem => {
         !elem.Likes
@@ -177,7 +154,8 @@ exports.getAllUserFilterByDateProduct = async (req, res, next) => {
       return 0;
     };
 
-    res.json({ result2: result2.sort(sortCount) });
+    res.json({ result: result.sort(sortCount) });
+    // res.json({ rank });
   } catch (err) {
     next(err);
   }

@@ -117,7 +117,8 @@ exports.deleteProduct = async (req, res, next) => {
     const { id } = req.params;
     const rows = await Product.destroy({
       where: {
-        id
+        id,
+        userId: req.uer.id
       }
     });
 
