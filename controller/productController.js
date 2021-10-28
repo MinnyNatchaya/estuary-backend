@@ -64,6 +64,8 @@ exports.createProduct = async (req, res, next) => {
 };
 
 exports.updateProduct = async (req, res, next) => {
+  console.log(req.body);
+
   try {
     const { id } = req.params;
     const {
@@ -76,9 +78,12 @@ exports.updateProduct = async (req, res, next) => {
       categoryId,
     } = req.body;
     //destructuring array index 0
+    console.log(req.file, "yyyy");
+    const result = await uploadPromise(req.file.path, { timeout: 2000000 });
+
     const [rows] = await Product.update(
       {
-        coverPic,
+        coverPic: result.secure_url,
         name,
         externalLink,
         description,
