@@ -81,7 +81,7 @@ exports.createProduct = async (req, res, next) => {
 		console.log(req.user.id);
 
 		const { coverPic, name, externalLink, description, price, hashtag, categoryId } = req.body;
-
+		console.log(description);
 		const result = await uploadPromise(req.file.path, { timeout: 2000000 });
 		console.log("ssssssss");
 		const product = await Product.create({
