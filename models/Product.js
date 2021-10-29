@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       price: {
-        type: DataTypes.STRING,
+        type: DataTypes.DECIMAL(15, 2),
         allowNull: false,
       },
       hashtag: {
@@ -72,13 +72,21 @@ module.exports = (sequelize, DataTypes) => {
     Product.hasMany(models.Share, {
       foreignKey: {
         name: 'productId',
-        allowNull: false,
+        allowNull: true,
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT',
     });
 
     Product.hasMany(models.Like, {
+      foreignKey: {
+        name: 'productId',
+        allowNull: true,
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT',
+    });
+    Product.hasMany(models.Purchased, {
       foreignKey: {
         name: 'productId',
         allowNull: false,

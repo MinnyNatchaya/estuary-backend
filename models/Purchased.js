@@ -1,27 +1,22 @@
 module.exports = (sequelize, DataTypes) => {
-  const ChatRoom = sequelize.define(
-    'ChatRoom',
-    {
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false
-      }
-    },
+  const Purchased = sequelize.define(
+    'Purchased',
+    {},
     {
       underscored: true
     }
   );
 
-  ChatRoom.associate = models => {
-    ChatRoom.hasMany(models.Chatlog, {
+  Purchased.associate = models => {
+    Purchased.belongsTo(models.Product, {
       foreignKey: {
-        name: 'chatRoomId',
+        name: 'productId',
         allowNull: false
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
     });
-    ChatRoom.belongsTo(models.User, {
+    Purchased.belongsTo(models.User, {
       foreignKey: {
         name: 'userId',
         allowNull: false
@@ -31,5 +26,5 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  return ChatRoom;
+  return Purchased;
 };

@@ -1,7 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   const Following = sequelize.define(
     'Following',
-    {},
+    {
+      status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      }
+    },
     {
       underscored: true
     }
@@ -21,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       as: 'followed',
       foreignKey: {
         name: 'followedId',
-        allowNull: true
+        allowNull: false
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -30,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     Following.hasMany(models.Notification, {
       foreignKey: {
         name: 'followingId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'

@@ -1,9 +1,14 @@
 const router = require('express').Router();
-// const passport = require('passport');
-const userController = require('../controller/userController');
-// const { upload } = require('../middleware/uploadfile');
+const passport = require('passport');
 
-// router.get('/', authenticate('jwt', { session: false }), userController.getAllUser);
-router.get('/', userController.getAllUser);
+const profileController = require('../controller/profileController');
+const userController = require('../controller/userController');
+
+router.get('/:id/allFollowing', passport.authenticate('jwt', { session: false }), userController.getAllUsersFollowing);
+router.get(
+  '/:id/allJoinedCommunities',
+  passport.authenticate('jwt', { session: false }),
+  userController.getAllJoinedCommunities,
+);
 
 module.exports = router;

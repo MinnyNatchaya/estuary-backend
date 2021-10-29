@@ -48,6 +48,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      wallet: {
+        type: DataTypes.DECIMAL(15, 2),
+        allowNull: false,
+        defaultValue: 0,
+      },
       role: {
         type: DataTypes.ENUM('CLIENT', 'ADMIN'),
         allowNull: false,
@@ -60,18 +65,19 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.associate = (models) => {
-    User.hasMany(models.ChatRoom, {
+    User.hasMany(models.Chatlog, {
       foreignKey: {
-        name: 'userId',
+        name: 'senderId',
         allowNull: false,
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT',
     });
     User.hasMany(models.Chatlog, {
+      as: 'receiver',
       foreignKey: {
-        name: 'userId',
-        allowNull: false,
+        name: 'receiverId',
+        // allowNull: false,
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT',
@@ -153,7 +159,23 @@ module.exports = (sequelize, DataTypes) => {
       as: 'followed',
       foreignKey: {
         name: 'followedId',
-        allowNull: true,
+        allowNull: false,
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT',
+    });
+    User.hasMany(models.Purchased, {
+      foreignKey: {
+        name: 'userId',
+        allowNull: false,
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT',
+    });
+    User.hasMany(models.Notification, {
+      foreignKey: {
+        name: 'userId',
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT',

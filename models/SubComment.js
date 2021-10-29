@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     SubComment.hasMany(models.Notification, {
       foreignKey: {
         name: 'subCommentId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
