@@ -34,16 +34,18 @@ const { User } = require('../models');
 
 exports.signup = async (req, res, next) => {
   try {
-    const { username, password, email } = req.body;
+    const { firstName, lastName, username, password, email } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     console.log(req.body);
 
     await User.create({
+      firstName,
+      lastName,
       username,
       password: hashedPassword,
       email,
-      role: 'CLIENT'
+      role: 'CLIENT',
     });
     res.status(200).json({ message: 'Your account has been created' });
   } catch (err) {
@@ -67,7 +69,7 @@ exports.login = async (req, res, next) => {
     const payload = {
       id: user.id,
       username: user.username,
-      role: user.role
+      role: user.role,
     };
     const secretKey = process.env.JWT_SECRET_KEY;
     const token = jwt.sign(payload, secretKey, { expiresIn: 60 * 60 * 24 });

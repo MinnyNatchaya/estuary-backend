@@ -4,58 +4,58 @@ module.exports = (sequelize, DataTypes) => {
     {
       content: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       pic: {
         type: DataTypes.STRING,
-        allowNull: true
-      }
+        allowNull: true,
+      },
     },
     {
-      underscored: true
-    }
+      underscored: true,
+    },
   );
 
-  Comment.associate = models => {
+  Comment.associate = (models) => {
     Comment.belongsTo(models.Product, {
       foreignKey: {
         name: 'productId',
-        allowNull: false
-      }
+        allowNull: true,
+      },
     });
 
     Comment.belongsTo(models.Post, {
       foreignKey: {
         name: 'postId',
-        allowNull: false
-      }
+        allowNull: true,
+      },
     });
 
     Comment.belongsTo(models.User, {
       foreignKey: {
         name: 'userId',
-        allowNull: false
+        allowNull: true,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     Comment.hasMany(models.SubComment, {
       foreignKey: {
         name: 'commentId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     Comment.hasMany(models.Notification, {
       foreignKey: {
         name: 'commentId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
   };
 

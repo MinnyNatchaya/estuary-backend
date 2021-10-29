@@ -4,159 +4,159 @@ module.exports = (sequelize, DataTypes) => {
     {
       firstName: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       lastName: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
         validate: {
-          isEmail: true
-        }
+          isEmail: true,
+        },
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
       },
       birthDate: {
         type: DataTypes.DATEONLY,
-        allowNull: true
+        allowNull: true,
       },
       address: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       phone: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       profilePic: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       bannerPic: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       role: {
         type: DataTypes.ENUM('CLIENT', 'ADMIN'),
         allowNull: false,
-        defaultValue: 'CLIENT'
-      }
+        defaultValue: 'CLIENT',
+      },
     },
     {
-      underscored: true
-    }
+      underscored: true,
+    },
   );
 
-  User.associate = models => {
+  User.associate = (models) => {
     User.hasMany(models.ChatRoom, {
       foreignKey: {
         name: 'userId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
     User.hasMany(models.Chatlog, {
       foreignKey: {
         name: 'userId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     User.hasMany(models.Member, {
       foreignKey: {
         name: 'userId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     User.hasMany(models.Share, {
       foreignKey: {
         name: 'userId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     User.hasMany(models.Like, {
       foreignKey: {
         name: 'userId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     User.hasMany(models.SubComment, {
       foreignKey: {
         name: 'userId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     User.hasMany(models.Comment, {
       foreignKey: {
         name: 'userId',
-        allowNull: false
+        allowNull: true,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     User.hasMany(models.Post, {
       foreignKey: {
         name: 'userId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     User.hasMany(models.Product, {
       foreignKey: {
         name: 'userId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     User.hasMany(models.Following, {
       as: 'follower',
       foreignKey: {
         name: 'followerId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
     User.hasMany(models.Following, {
       as: 'followed',
       foreignKey: {
         name: 'followedId',
-        allowNull: true
+        allowNull: true,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
   };
 

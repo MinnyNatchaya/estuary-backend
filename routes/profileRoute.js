@@ -8,7 +8,7 @@ router.put(
   '/:id',
   passport.authenticate('jwt', { session: false }),
   upload.array('editPic'),
-  profileController.updateProfile
+  profileController.updateProfile,
 );
 
 module.exports = router;
