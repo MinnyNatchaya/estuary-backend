@@ -25,7 +25,7 @@ const marketplaceRoute = require("./routes/marketplaceRoute");
 const sidebarRoute = require("./routes/sidebarRoute");
 const headerRoute = require("./routes/headerRoute");
 const rankRoute = require("./routes/rankRoute");
-
+const communityRoute = require("./routes/communityRoute");
 const passport = require("passport");
 require("./config/passport");
 app.use(passport.initialize());
@@ -38,6 +38,7 @@ const omiseRoute = require("./routes/omiseRoute");
 app.use("/checkout-credit-card", omiseRoute);
 
 ///////////////////////////////////////////////////////
+app.use("/community", communityRoute);
 app.use("/rank", rankRoute);
 app.use("/header", headerRoute);
 app.use("/sidebar", sidebarRoute);
