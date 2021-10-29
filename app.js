@@ -26,6 +26,8 @@ const sidebarRoute = require("./routes/sidebarRoute");
 const headerRoute = require("./routes/headerRoute");
 const rankRoute = require("./routes/rankRoute");
 const communityRoute = require("./routes/communityRoute");
+const commentRoute = require("./routes/commentRoute");
+
 const passport = require("passport");
 require("./config/passport");
 app.use(passport.initialize());
@@ -50,6 +52,7 @@ app.use("/category", productCategoryRoute);
 app.use("/chat", chatRoute);
 app.use("/product", productRoute);
 app.use("/post", postRoute);
+app.use("/comment", commentRoute);
 app.use("/profile", profileRoute);
 app.use("/user", userRoute);
 app.use("/", authRoute);
