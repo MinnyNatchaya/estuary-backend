@@ -48,19 +48,24 @@ exports.updateProfile = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { firstName, lastName, username, email, password, birthDate, address, phone, typePic } = req.body;
-    const user = await User.findOne({ where: { username: username } });
-    // const hasedPassword = await bcrypt.hash(password, 12);
+    console.dir(password);
+    // const user = await User.findOne({ where: { username: username } });
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      console.dir(isPasswordCorrect);
-      return res.status(400).json({ message: 'Incorrect password', name: 'passwordError' });
+    let hasedPassword;
+    if (password) {
+      hasedPassword = await bcrypt.hash(password, 12);
     }
+
+    // const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    // if (!isPasswordCorrect) {
+    //   console.dir(isPasswordCorrect);
+    //   return res.status(400).json({ message: 'Incorrect password', name: 'passwordError' });
+    // }
 
     const result = await Promise.all(req.files.map(item => uploadPromise(item.path, { timeout: 600000 })));
 
     // console.dir(req.files);
-    console.dir(result);
+    // console.dir(result);
 
     const profilePic = !typePic.includes('PROFILE') ? undefined : result[0].secure_url;
     const bannerPic = !typePic.includes('BANNER') ? undefined : result[1] ? result[1].secure_url : result[0].secure_url;
@@ -70,7 +75,7 @@ exports.updateProfile = async (req, res, next) => {
         firstName: firstName === 'null' ? undefined : firstName,
         lastName: lastName === 'null' ? undefined : lastName,
         username,
-        // password: hasedPassword,
+        password: password ? hasedPassword : undefined,
         email,
         birthDate: birthDate === 'null' ? undefined : birthDate,
         address: address === 'null' ? undefined : address,

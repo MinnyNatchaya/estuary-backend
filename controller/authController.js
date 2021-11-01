@@ -43,7 +43,7 @@ exports.signup = async (req, res, next) => {
       username,
       password: hashedPassword,
       email,
-      role: 'CLIENT',
+      role: 'CLIENT'
     });
     res.status(200).json({ message: 'Your account has been created' });
   } catch (err) {
@@ -69,7 +69,54 @@ exports.login = async (req, res, next) => {
       id: user.id,
       username: user.username,
       role: user.role,
-      profilePic: user.profilePic,
+      profilePic: user.profilePic
+    };
+    const secretKey = process.env.JWT_SECRET_KEY;
+    const token = jwt.sign(payload, secretKey, { expiresIn: 60 * 60 * 24 });
+
+    res.json({ message: 'login success', token });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.loginGoogle = async (req, res, next) => {
+  try {
+    const { username, password, email, firstName, lastName, profilePic } = req.body;
+    const user = await User.findOne({ where: { email: email } });
+    // console.dir(user);
+    if (!user) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await User.create({
+        username,
+        password: hashedPassword,
+        email,
+        firstName,
+        lastName,
+        profilePic,
+        isGoogleAccount: true,
+        role: 'CLIENT'
+      });
+      // res.status(200).json({ message: 'Your account has been created' });
+      const user2 = await User.findOne({ where: { email: email } });
+
+      const payload = {
+        id: user2.id,
+        username: user2.username,
+        role: user2.role,
+        profilePic: user2.profilePic
+      };
+      const secretKey = process.env.JWT_SECRET_KEY;
+      const token = jwt.sign(payload, secretKey, { expiresIn: 60 * 60 * 24 });
+
+      res.json({ message: 'login success', token });
+    }
+
+    const payload = {
+      id: user.id,
+      username: user.username,
+      role: user.role,
+      profilePic: user.profilePic
     };
     const secretKey = process.env.JWT_SECRET_KEY;
     const token = jwt.sign(payload, secretKey, { expiresIn: 60 * 60 * 24 });
