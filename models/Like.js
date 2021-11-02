@@ -31,10 +31,25 @@ module.exports = (sequelize, DataTypes) => {
 			onDelete: "RESTRICT",
 			onUpdate: "RESTRICT",
 		});
-
+		Like.belongsTo(models.Comment, {
+			foreignKey: {
+				name: "commentId",
+				allowNull: true,
+			},
+			onDelete: "RESTRICT",
+			onUpdate: "RESTRICT",
+		});
 		Like.belongsTo(models.Product, {
 			foreignKey: {
 				name: "productId",
+				allowNull: true,
+			},
+			onDelete: "RESTRICT",
+			onUpdate: "RESTRICT",
+		});
+		Like.hasMany(models.Notification, {
+			foreignKey: {
+				name: "likeId",
 				allowNull: true,
 			},
 			onDelete: "RESTRICT",

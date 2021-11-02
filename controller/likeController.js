@@ -24,14 +24,16 @@ exports.createLike = async (req, res, next) => {
 	try {
 		const { postId, productId } = req.body;
 
-		await Like.create({
+		const createdLike = await Like.create({
 			userId: req.user.id,
 			postId: postId ? postId : undefined,
 			productId: productId ? productId : undefined,
 			status: true,
 		});
 
-		res.status(200).json({ message: "Like has been created" });
+		console.log("createdLike", JSON.stringify(createdLike, null, 2));
+
+		res.status(200).json({ message: "Like has been created", likeId: createdLike.id });
 	} catch (err) {
 		next(err);
 	}
@@ -55,7 +57,7 @@ exports.updateLike = async (req, res, next) => {
 		if (rows === 0) {
 			return res.status(400).json({ message: "Fail to update Like" });
 		}
-		res.status(200).json({ message: "Like has been updated" });
+		res.status(200).json({ message: "Like has been updated", likeId: id });
 	} catch (err) {
 		next(err);
 	}
