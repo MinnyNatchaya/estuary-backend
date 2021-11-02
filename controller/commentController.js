@@ -17,14 +17,36 @@ exports.getAllComment = async (req, res, next) => {
 
     const comment = await Comment.findAll({
       where: {
-        postId: id,
+        postId: id
       },
       include: {
         model: User,
         attributes: ['firstName', 'lastName', 'profilePic', 'id'],
-        required: true,
+        required: true
       },
-      order: [['createdAt', 'DESC']],
+      order: [['createdAt', 'DESC']]
+    });
+
+    res.json({ comment });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getAllCommentByProductId = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const comment = await Comment.findAll({
+      where: {
+        productId: id
+      },
+      include: {
+        model: User,
+        attributes: ['firstName', 'lastName', 'username', 'profilePic', 'id'],
+        required: true
+      },
+      order: [['createdAt', 'DESC']]
     });
 
     res.json({ comment });
@@ -36,12 +58,13 @@ exports.getAllComment = async (req, res, next) => {
 exports.createComment = async (req, res, next) => {
   console.log(req.body);
   try {
-    const { userId, PostId, content } = req.body;
+    const { userId, PostId, content, ProductId } = req.body;
 
     await Comment.create({
       userId,
-      postId: PostId,
-      content,
+      postId: PostId ? PostId : null,
+      productId: ProductId ? ProductId : null,
+      content
     });
 
     res.status(201).json({ msg: 'success' });
@@ -69,10 +92,11 @@ exports.updateComment = async (req, res, next) => {
 exports.deleteComment = async (req, res, next) => {
   try {
     const { id } = req.params;
+    // console.log(id);
     await Comment.destroy({
       where: {
-        id,
-      },
+        id
+      }
     });
     res.status(204).json({ message: 'success delete comment' });
   } catch (err) {
