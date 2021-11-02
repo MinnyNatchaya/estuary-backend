@@ -20,9 +20,19 @@ exports.getLikeByPostId = async (req, res, next) => {
 	}
 };
 
+exports.getLikeByCommentId = async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const like = await Like.findAll({ where: { commentId: id } });
+		res.json({ like });
+	} catch (err) {
+		next(err);
+	}
+};
+
 exports.createLike = async (req, res, next) => {
 	try {
-		const { postId, productId } = req.body;
+		const { postId, productId, commentId } = req.body;
 
 		const createdLike = await Like.create({
 			userId: req.user.id,

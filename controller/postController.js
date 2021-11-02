@@ -3,11 +3,44 @@ const util = require('util');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 const { Post } = require('../models');
+const { Comment } = require('../models');
 const { PostPicture } = require('../models');
 const { User } = require('../models');
 
 const uploadPromise = util.promisify(cloudinary.uploader.upload); // แปลงให้เป็น Promise new Promise reslove, reject
 const destroyPromise = util.promisify(cloudinary.uploader.destroy);
+
+exports.getPostById = async (req, res, next) => {
+  try {
+    // console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+    console.log(req.params);
+    const { id } = req.params;
+    const post = await Post.findOne({
+      where: { id },
+
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: ['password'],
+          },
+        },
+        {
+          model: PostPicture,
+        },
+        // {
+        //   model: Comment,
+
+        //   attributes: ['content', 'createdAt'],
+        // },
+      ],
+    });
+    res.json({ post });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.getAllPost = async (req, res, next) => {
   try {
     const post = await Post.findAll({
@@ -22,6 +55,8 @@ exports.getAllPost = async (req, res, next) => {
           model: PostPicture,
         },
       ],
+
+      order: [['createdAt', 'DESC']],
     });
     // =========== ส่ง response
     res.json({ post });
@@ -80,7 +115,7 @@ exports.updatePost = async (req, res, next) => {
     //  รับ data มาจาก front end
     const { postId, content } = req.body;
 
-    console.log('tttttttttttttttttttttttt');
+    // console.log('tttttttttttttttttttttttt');
     //*** (***1)   upload รูปขึ้น cloudinary
     if (req.files) {
       // loop ขึ้น cloudinary
