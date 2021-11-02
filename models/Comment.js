@@ -40,6 +40,15 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'RESTRICT',
     });
 
+    Comment.hasMany(models.Like, {
+      foreignKey: {
+        name: 'commentId',
+        allowNull: true,
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT',
+    });
+
     Comment.hasMany(models.SubComment, {
       foreignKey: {
         name: 'commentId',

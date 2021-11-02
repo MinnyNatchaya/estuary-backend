@@ -7,8 +7,8 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), commentCont
 
 router.post('/', passport.authenticate('jwt', { session: false }), commentController.createComment);
 
-// router.put('/:id', passport.authenticate('jwt', { session: false }), commentController.updateComment);
-router.put('/:id', commentController.updateComment);
+router.put('/:id', passport.authenticate('jwt', { session: false }), commentController.updateComment);
+// router.put('/:id', commentController.updateComment);
 
 router.delete('/:id', passport.authenticate('jwt', { session: false }), commentController.deleteComment);
 

@@ -21,7 +21,7 @@ exports.getAllComment = async (req, res, next) => {
       },
       include: {
         model: User,
-        attributes: ['firstName', 'lastName', 'profilePic'],
+        attributes: ['firstName', 'lastName', 'profilePic', 'id'],
         required: true,
       },
       order: [['createdAt', 'DESC']],
@@ -43,27 +43,24 @@ exports.createComment = async (req, res, next) => {
       postId: PostId,
       content,
     });
+
+    res.status(201).json({ msg: 'success' });
   } catch (err) {
     next(err);
   }
 };
 
 exports.updateComment = async (req, res, next) => {
-  console.log('666666666666666666');
-
   try {
     const { id } = req.params;
     const { content } = req.body;
 
-    const [rows] = await Comment.update({
-      id,
-      content,
-    });
+    const [rows] = await Comment.update({ content }, { where: { id } });
 
     if (rows === 0) {
       return res.status(400).json({ message: 'fail to update comment' });
     }
-    res.status(201).json({ msg: 'success update success' });
+    res.status(200).json({ message: 'success update comment' });
   } catch (err) {
     next(err);
   }
@@ -77,6 +74,7 @@ exports.deleteComment = async (req, res, next) => {
         id,
       },
     });
+    res.status(204).json({ message: 'success delete comment' });
   } catch (err) {
     next(err);
   }
