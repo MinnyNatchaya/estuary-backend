@@ -87,6 +87,14 @@ module.exports = (sequelize, DataTypes) => {
 			onDelete: "RESTRICT",
 			onUpdate: "RESTRICT",
 		});
+		Notification.belongsTo(models.Member, {
+			foreignKey: {
+				name: "newMemberId",
+				allowNull: true,
+			},
+			onDelete: "RESTRICT",
+			onUpdate: "RESTRICT",
+		});
 	};
 
 	return Notification;

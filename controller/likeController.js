@@ -38,6 +38,7 @@ exports.createLike = async (req, res, next) => {
 			userId: req.user.id,
 			postId: postId ? postId : undefined,
 			productId: productId ? productId : undefined,
+			commentId: commentId ? commentId : undefined,
 			status: true,
 		});
 

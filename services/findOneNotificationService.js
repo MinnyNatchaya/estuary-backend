@@ -30,6 +30,10 @@ exports.findOneNotificationsService = async (notificationId) => {
 					//
 				},
 				{
+					model: Member,
+					include: [{ model: User, attributes: ["username"] }],
+				},
+				{
 					model: Following,
 					include: [
 						{
@@ -59,6 +63,18 @@ exports.findOneNotificationsService = async (notificationId) => {
 		// console.log("all noti", JSON.stringify(allNotifications, null, 2));
 
 		const parsed = JSON.parse(JSON.stringify(allNotifications));
+
+		const date = new Date(parsed.createdAt);
+		const modded =
+			date.toLocaleString("en-GB").split(" ")[1].slice(0, 5) +
+			" " +
+			date.toLocaleString("en-GB", {
+				weekday: "short",
+				year: "numeric",
+				month: "short",
+				day: "numeric",
+			});
+
 		switch (true) {
 			/////////////comment///////////////
 			case parsed.actionType === "commented" && parsed.actionOn === "post":
@@ -70,7 +86,7 @@ exports.findOneNotificationsService = async (notificationId) => {
 					actionOn: parsed.actionOn,
 					actionType: parsed.actionType,
 					params: `/post/${parsed.Comment.postId}`,
-					createdAt: parsed.Comment.createdAt,
+					createdAt: modded,
 					content: parsed.Comment.content,
 				};
 			// break;
@@ -83,7 +99,7 @@ exports.findOneNotificationsService = async (notificationId) => {
 					actionOn: parsed.actionOn,
 					actionType: parsed.actionType,
 					params: `/post/${parsed.Comment.productId}`,
-					createdAt: parsed.Comment.createdAt,
+					createdAt: modded,
 					content: parsed.Comment.content,
 				};
 			// break;
@@ -99,7 +115,7 @@ exports.findOneNotificationsService = async (notificationId) => {
 					actionOn: parsed.actionOn,
 					actionType: parsed.actionType,
 					params: `/post/${parsed.Like.postId}`,
-					createdAt: parsed.Like.createdAt,
+					createdAt: modded,
 					content: parsed.Like.content,
 				};
 			case parsed.actionType === "liked" && parsed.actionOn === "comment":
@@ -111,7 +127,7 @@ exports.findOneNotificationsService = async (notificationId) => {
 					actionOn: parsed.actionOn,
 					actionType: parsed.actionType,
 					params: `/post/${parsed.Like.commentId}`,
-					createdAt: parsed.Like.createdAt,
+					createdAt: modded,
 					content: parsed.Like.content,
 				};
 			case parsed.actionType === "liked" && parsed.actionOn === "product":
@@ -123,7 +139,7 @@ exports.findOneNotificationsService = async (notificationId) => {
 					actionOn: parsed.actionOn,
 					actionType: parsed.actionType,
 					params: `/product/${parsed.Like.productId}`,
-					createdAt: parsed.Like.createdAt,
+					createdAt: modded,
 					content: parsed.Like.content,
 				};
 			/////////////////////////////////
@@ -134,11 +150,11 @@ exports.findOneNotificationsService = async (notificationId) => {
 					id: parsed.id,
 					isViewed: parsed.isViewed,
 					senderName: parsed.Following.follower.username,
-					profilePic: parsed.Following.follower.username.profilePic,
+					profilePic: parsed.Following.follower.profilePic,
 					actionOn: parsed.actionOn,
 					actionType: parsed.actionType,
 					params: `/profile/${parsed.Following.follower.id}`,
-					createdAt: parsed.Following.follower.createdAt,
+					createdAt: modded,
 					content: null,
 				};
 			// break;
@@ -154,8 +170,9 @@ exports.findOneNotificationsService = async (notificationId) => {
 					actionOn: parsed.actionOn,
 					actionType: parsed.actionType,
 					params: `/profile/${parsed.Community.id}`,
-					createdAt: parsed.createdAt,
+					createdAt: modded,
 					content: null,
+					newMemberName: parsed.Member.User.username,
 				};
 			// break;
 			//////////////////////////////////////
