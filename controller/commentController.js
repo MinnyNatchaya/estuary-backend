@@ -21,7 +21,7 @@ exports.getAllComment = async (req, res, next) => {
       },
       include: {
         model: User,
-        attributes: ['firstName', 'lastName', 'profilePic', 'id'],
+        attributes: ['firstName', 'lastName', 'profilePic', 'username', 'id'],
         required: true,
       },
       order: [['createdAt', 'DESC']],

@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'RESTRICT',
     });
 
-    Like.belongsTo(models.Post, {
+    Like.belongsTo(models.Comment, {
       foreignKey: {
         name: 'commentId',
         allowNull: true,
