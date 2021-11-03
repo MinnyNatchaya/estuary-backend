@@ -24,13 +24,13 @@ exports.createFollowing = async (req, res, next) => {
 	try {
 		const { followedId } = req.body;
 
-		await Following.create({
+		const createdFollowing = await Following.create({
 			followerId: req.user.id,
 			followedId,
 			status: true,
 		});
 
-		res.status(200).json({ message: "Following has been created" });
+		res.status(200).json({ message: "Following has been created", followingId: createdFollowing.id });
 	} catch (err) {
 		next(err);
 	}
