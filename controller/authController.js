@@ -55,10 +55,6 @@ exports.login = async (req, res, next) => {
 	try {
 		const { username, password } = req.body;
 		const user = await User.findOne({ where: { username: username } });
-		const ownedCommunityId = await Member.findOne({
-			where: { userId: user.id, role: "OWNER" },
-			attributes: ["communityId"],
-		});
 		if (!user) {
 			return res.status(400).json({ message: "Incorrect username or password", name: "loginError" });
 		}
@@ -74,7 +70,6 @@ exports.login = async (req, res, next) => {
 			username: user.username,
 			role: user.role,
 			profilePic: user.profilePic,
-			ownedCommunityId: ownedCommunityId.communityId,
 		};
 		const secretKey = process.env.JWT_SECRET_KEY;
 		const token = jwt.sign(payload, secretKey, { expiresIn: 60 * 60 * 24 });
@@ -105,34 +100,23 @@ exports.loginGoogle = async (req, res, next) => {
 			// res.status(200).json({ message: 'Your account has been created' });
 			const user2 = await User.findOne({ where: { email: email } });
 
-			const ownedCommunityId = await Member.findOne({
-				where: { userId: user2.id, role: "OWNER" },
-				attributes: ["communityId"],
-			});
-
 			const payload = {
 				id: user2.id,
 				username: user2.username,
 				role: user2.role,
 				profilePic: user2.profilePic,
-				ownedCommunityId: ownedCommunityId.communityId,
 			};
 			const secretKey = process.env.JWT_SECRET_KEY;
 			const token = jwt.sign(payload, secretKey, { expiresIn: 60 * 60 * 24 });
 
 			return res.json({ message: "login success", token });
 		}
-		const ownedCommunityId = await Member.findOne({
-			where: { userId: user.id, role: "OWNER" },
-			attributes: ["communityId"],
-		});
 
 		const payload = {
 			id: user.id,
 			username: user.username,
 			role: user.role,
 			profilePic: user.profilePic,
-			ownedCommunityId: ownedCommunityId.communityId,
 		};
 		const secretKey = process.env.JWT_SECRET_KEY;
 		const token = jwt.sign(payload, secretKey, { expiresIn: 60 * 60 * 24 });

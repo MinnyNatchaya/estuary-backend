@@ -52,3 +52,16 @@ exports.getAllJoinedCommunities = async (req, res, next) => {
 		next(err);
 	}
 };
+
+exports.getOwnedCommunity = async (req, res, next) => {
+	try {
+		const ownedCommunityId = await Member.findOne({
+			where: { userId: req.params.id, role: "OWNER" },
+			attributes: ["communityId"],
+		});
+
+		res.send({ ownedCommunityId: ownedCommunityId === null ? ownedCommunityId : ownedCommunityId.communityId });
+	} catch (err) {
+		next(err);
+	}
+};
