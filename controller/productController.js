@@ -108,12 +108,19 @@ exports.updateProduct = async (req, res, next) => {
     const { id } = req.params;
     const { coverPic, name, externalLink, description, price, hashtag, categoryId } = req.body;
     //destructuring array index 0
-    console.log(req.file, 'yyyy');
-    const result = await uploadPromise(req.file.path, { timeout: 2000000 });
+    // console.log(req.file, 'yyyy');
+    // const result = await uploadPromise(req.file.path, { timeout: 2000000 });
+
+    let result = undefined;
+
+    if (req.file) {
+      result = await uploadPromise(req.file.path);
+      fs.unlinkSync(req.file.path);
+    }
 
     const [rows] = await Product.update(
       {
-        coverPic: result.secure_url,
+        coverPic: result === undefined ? undefined : result.secure_url,
         name,
         externalLink,
         description,
