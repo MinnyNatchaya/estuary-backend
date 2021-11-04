@@ -5,55 +5,55 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false,
-      },
+        defaultValue: false
+      }
     },
     {
-      underscored: true,
-    },
+      underscored: true
+    }
   );
 
-  Like.associate = (models) => {
+  Like.associate = models => {
     Like.belongsTo(models.User, {
       foreignKey: {
         name: 'userId',
-        allowNull: false,
+        allowNull: false
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT',
+      onUpdate: 'RESTRICT'
     });
 
     Like.belongsTo(models.Post, {
       foreignKey: {
         name: 'postId',
-        allowNull: true,
+        allowNull: true
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT',
+      onUpdate: 'RESTRICT'
     });
     Like.belongsTo(models.Comment, {
       foreignKey: {
         name: 'commentId',
-        allowNull: true,
+        allowNull: true
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT',
+      onUpdate: 'RESTRICT'
     });
     Like.belongsTo(models.Product, {
       foreignKey: {
         name: 'productId',
-        allowNull: true,
+        allowNull: true
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT',
+      onUpdate: 'RESTRICT'
     });
     Like.hasMany(models.Notification, {
       foreignKey: {
         name: 'likeId',
-        allowNull: true,
+        allowNull: true
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT',
+      onUpdate: 'RESTRICT'
     });
   };
   return Like;

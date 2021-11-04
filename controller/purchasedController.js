@@ -14,8 +14,7 @@ exports.getPurchasedById = async (req, res, next) => {
 
 exports.createPurchased = async (req, res, next) => {
   try {
-    const { productId, price, userId, wallet } = req.body;
-    // console.log(req.body);
+    const { userSalerId, userSalerWallet, productId, price, userId, wallet } = req.body;
 
     await Purchased.create({
       productId: productId,
@@ -23,13 +22,22 @@ exports.createPurchased = async (req, res, next) => {
     });
 
     const sum = +wallet - +price;
-    console.log(sum);
     await User.update(
       {
         wallet: sum
       },
       {
-        where: { id: req.user.id }
+        where: { id: userId }
+      }
+    );
+
+    const sumSaler = +userSalerWallet + +price;
+    await User.update(
+      {
+        wallet: sumSaler
+      },
+      {
+        where: { id: userSalerId }
       }
     );
 
