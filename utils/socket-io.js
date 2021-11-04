@@ -250,7 +250,7 @@ exports.socketConnection = (server) => {
 
 			const unreadNotificationCount = JSON.parse(JSON.stringify(fetched)).filter((item) => !item.isViewed).length;
 			// console.log("COUNTTTTTT", unreadNotificationCount);
-			// console.log(JSON.stringify(fetched, null, 2));
+			console.log(JSON.stringify(fetched, null, 2));
 			io.to(userSocketId).emit("fetched notification", fetched === null ? [] : fetched, unreadNotificationCount);
 		});
 
@@ -385,10 +385,10 @@ exports.socketConnection = (server) => {
 
 			const allChatlog = [...allDMLog, ...allGroupChatLog];
 
-			console.log("chatchatchatchatchatchatchatchatchatchatchat");
-			console.log("chatchatchatchatchatchatchatchatchatchatchat");
-			console.log("chatchatchatchatchatchatchatchatchatchatchat");
-			console.log(`allchat`, JSON.stringify(allChatlog, null, 2));
+			// console.log("chatchatchatchatchatchatchatchatchatchatchat");
+			// console.log("chatchatchatchatchatchatchatchatchatchatchat");
+			// console.log("chatchatchatchatchatchatchatchatchatchatchat");
+			// console.log(`allchat`, JSON.stringify(allChatlog, null, 2));
 
 			const sortItemByTime = (a, b) => {
 				if (a.createdAt > b.createdAt) {

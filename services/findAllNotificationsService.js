@@ -60,7 +60,7 @@ exports.findAllNotificationsService = async (userId) => {
 			],
 		});
 
-		// console.log("all noti", JSON.stringify(allNotifications, null, 2));
+		console.log("all noti", JSON.stringify(allNotifications, null, 2));
 
 		const sortItemByTime = (a, b) => {
 			if (a.createdAt > b.createdAt) {
