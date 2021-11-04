@@ -11,6 +11,11 @@ router.post(
 );
 router.get("/:id", passport.authenticate("jwt", { session: false }), communityController.getCommunityById);
 router.get(
+	"/:communityId/allMember",
+	passport.authenticate("jwt", { session: false }),
+	communityController.getAllMemberByCOmmunityId
+);
+router.get(
 	"/isMember/:browserUserId/:communityId",
 	passport.authenticate("jwt", { session: false }),
 	communityController.getIsCommunityMemberById

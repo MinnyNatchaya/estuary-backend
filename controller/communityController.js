@@ -106,3 +106,32 @@ exports.updateMember = async (req, res, next) => {
 		next(err);
 	}
 };
+
+exports.getAllMemberByCOmmunityId = async (req, res, next) => {
+	try {
+		const memberList = await Member.findAll({
+			where: { communityId: req.params.communityId, status: true },
+			attributes: ["id", "userId", "role"],
+			include: [
+				{
+					model: User,
+					attributes: ["id", "username", "profilePic"],
+				},
+			],
+		});
+
+		const toSend = JSON.parse(JSON.stringify(memberList)).map((item) => {
+			return {
+				// id: item.id,
+				id: item.User.id,
+				name: item.User.username,
+				profilePic: item.User.profilePic,
+				role: item.role,
+			};
+		});
+
+		res.send({ communityMemberList: toSend });
+	} catch (err) {
+		next(err);
+	}
+};
