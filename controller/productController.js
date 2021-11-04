@@ -61,7 +61,7 @@ exports.getProductById = async (req, res, next) => {
       include: [
         {
           model: User,
-          attributes: ['username', 'profilePic', 'wallet']
+          attributes: ['username', 'profilePic', 'id', 'wallet']
         },
         {
           model: ProductCategory,

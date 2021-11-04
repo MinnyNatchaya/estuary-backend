@@ -68,14 +68,18 @@ exports.createMember = async (req, res, next) => {
 		const communityId = req.params.id;
 		const { userId } = req.body;
 
-		await Member.create({
+		const newMember = await Member.create({
 			userId,
 			communityId,
 			status: true,
 			role: "MEMBER",
 		});
 
-		res.status(200).json({ message: "Following has been created" });
+		res.status(200).json({
+			message: "Following has been created",
+			communityId: newMember.communityId,
+			newMemberId: newMember.id,
+		});
 	} catch (err) {
 		next(err);
 	}

@@ -12,9 +12,8 @@ const destroyPromise = util.promisify(cloudinary.uploader.destroy);
 
 exports.getPostById = async (req, res, next) => {
   try {
-    // console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-    console.log(req.params);
     const { id } = req.params;
+
     const post = await Post.findOne({
       where: { id },
 
@@ -28,14 +27,12 @@ exports.getPostById = async (req, res, next) => {
         {
           model: PostPicture,
         },
-        // {
-        //   model: Comment,
-
-        //   attributes: ['content', 'createdAt'],
-        // },
       ],
+      order: [['createdAt', 'DESC']],
     });
-    res.json({ post });
+
+    // res.json({ post });
+    res.status(201).json({ post });
   } catch (err) {
     next(err);
   }
@@ -44,6 +41,9 @@ exports.getPostById = async (req, res, next) => {
 exports.getAllPost = async (req, res, next) => {
   try {
     const post = await Post.findAll({
+      where: {
+        communityId: null,
+      },
       include: [
         {
           model: User,
@@ -65,18 +65,18 @@ exports.getAllPost = async (req, res, next) => {
   }
 };
 
-exports.getPostById = async (req, res, next) => {
-  try {
-  } catch (err) {
-    next(err);
-  }
-};
+// exports.getPostById = async (req, res, next) => {
+//   try {
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 // =========================================================================
 exports.createPost = async (req, res, next) => {
   try {
     //===================== ตัวรับข้อมูลมาจาก front end
-    const { userId, content } = req.body;
+    const { userId, content, communityId } = req.body;
 
     // console.log(userId);
 
@@ -84,6 +84,7 @@ exports.createPost = async (req, res, next) => {
     const post = await Post.create({
       userId,
       content,
+      communityId: communityId ? communityId : null,
     });
     // res.status(201).json({ post });
     // console.log(JSON.stringify(post, null, 2));
@@ -176,12 +177,11 @@ exports.updatePost = async (req, res, next) => {
 };
 
 exports.deletePost = async (req, res, next) => {
-  // console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
-
   try {
     // ลบข้อมูลทั้ง 2 ตาราง
 
     const { id } = req.params;
+
     const rowsPostPicture = await PostPicture.destroy({
       where: {
         postId: id,
@@ -194,7 +194,7 @@ exports.deletePost = async (req, res, next) => {
       },
     });
 
-    if (rowsPostPicture === 0 || rowsPost === 0) {
+    if (rowsPost === 0) {
       return res.status(400).json({ message: 'fail to delete Post and PostPicture ' });
     }
     res.status(204).json({ message: 'sucess delete Post and PostPicture' });

@@ -1,4 +1,4 @@
-// const { sequelize } = require('./models');
+// const { sequelize } = require("./models");
 // sequelize.sync({ alter: true });
 
 require('dotenv').config();
@@ -27,6 +27,7 @@ const headerRoute = require('./routes/headerRoute');
 const rankRoute = require('./routes/rankRoute');
 const communityRoute = require('./routes/communityRoute');
 const commentRoute = require('./routes/commentRoute');
+const postCommunityRoute = require('./routes/postCommunityRoute');
 
 const passport = require('passport');
 require('./config/passport');
@@ -56,6 +57,7 @@ app.use('/comment', commentRoute);
 app.use('/profile', profileRoute);
 app.use('/user', userRoute);
 app.use('/', authRoute);
+app.use('/postCommunity', postCommunityRoute);
 
 socketConnection(server);
 

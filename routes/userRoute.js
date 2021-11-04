@@ -1,14 +1,15 @@
-const router = require('express').Router();
-const passport = require('passport');
+const router = require("express").Router();
+const passport = require("passport");
 
-const profileController = require('../controller/profileController');
-const userController = require('../controller/userController');
+const profileController = require("../controller/profileController");
+const userController = require("../controller/userController");
 
-router.get('/:id/allFollowing', passport.authenticate('jwt', { session: false }), userController.getAllUsersFollowing);
+router.get("/:id/allFollowing", passport.authenticate("jwt", { session: false }), userController.getAllUsersFollowing);
+router.get("/:id/ownedCommunity", passport.authenticate("jwt", { session: false }), userController.getOwnedCommunity);
 router.get(
-  '/:id/allJoinedCommunities',
-  passport.authenticate('jwt', { session: false }),
-  userController.getAllJoinedCommunities,
+	"/:id/allJoinedCommunities",
+	passport.authenticate("jwt", { session: false }),
+	userController.getAllJoinedCommunities
 );
 
 module.exports = router;

@@ -17,14 +17,14 @@ exports.getAllComment = async (req, res, next) => {
 
     const comment = await Comment.findAll({
       where: {
-        postId: id
+        postId: id,
       },
       include: {
         model: User,
-        attributes: ['firstName', 'lastName', 'profilePic', 'id'],
-        required: true
+        attributes: ['firstName', 'lastName', 'username', 'profilePic', 'id'],
+        required: true,
       },
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     });
 
     res.json({ comment });
@@ -39,14 +39,14 @@ exports.getAllCommentByProductId = async (req, res, next) => {
 
     const comment = await Comment.findAll({
       where: {
-        productId: id
+        productId: id,
       },
       include: {
         model: User,
         attributes: ['firstName', 'lastName', 'username', 'profilePic', 'id'],
-        required: true
+        required: true,
       },
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
     });
 
     res.json({ comment });
@@ -60,14 +60,14 @@ exports.createComment = async (req, res, next) => {
   try {
     const { userId, PostId, content, ProductId } = req.body;
 
-    await Comment.create({
+    const createdCommentId = await Comment.create({
       userId,
       postId: PostId ? PostId : null,
       productId: ProductId ? ProductId : null,
-      content
+      content,
     });
 
-    res.status(201).json({ msg: 'success' });
+    res.status(200).json({ msg: 'success', commentId: createdCommentId.id });
   } catch (err) {
     next(err);
   }
@@ -95,8 +95,8 @@ exports.deleteComment = async (req, res, next) => {
     // console.log(id);
     await Comment.destroy({
       where: {
-        id
-      }
+        id,
+      },
     });
     res.status(204).json({ message: 'success delete comment' });
   } catch (err) {
