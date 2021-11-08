@@ -34,6 +34,15 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
     });
+
+    SubComment.hasMany(models.Notification, {
+      foreignKey: {
+        name: 'subCommentId',
+        allowNull: true
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
   };
 
   return SubComment;

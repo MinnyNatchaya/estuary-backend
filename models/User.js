@@ -4,19 +4,32 @@ module.exports = (sequelize, DataTypes) => {
     {
       firstName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       lastName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
       },
-      birthDate: {
+      email: {
         type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: true
+        }
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      },
+      birthDate: {
+        type: DataTypes.DATEONLY,
         allowNull: true
       },
       address: {
@@ -35,10 +48,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-      role: {
-        type: DataTypes.ENUM('Client', 'Admin'),
+      wallet: {
+        type: DataTypes.DECIMAL(15, 2),
         allowNull: false,
-        defaultValue: 'Client'
+        defaultValue: 0
+      },
+      role: {
+        type: DataTypes.ENUM('CLIENT', 'ADMIN'),
+        allowNull: false,
+        defaultValue: 'CLIENT'
+      },
+      isGoogleAccount: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       }
     },
     {
@@ -47,18 +70,19 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.associate = models => {
-    User.hasMany(models.ChatRoom, {
+    User.hasMany(models.Chatlog, {
       foreignKey: {
-        name: 'userId',
+        name: 'senderId',
         allowNull: false
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
     });
     User.hasMany(models.Chatlog, {
+      as: 'receiver',
       foreignKey: {
-        name: 'userId',
-        allowNull: false
+        name: 'receiverId'
+        // allowNull: false,
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -103,13 +127,57 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Comment, {
       foreignKey: {
         name: 'userId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
     });
 
     User.hasMany(models.Post, {
+      foreignKey: {
+        name: 'userId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+
+    User.hasMany(models.Product, {
+      foreignKey: {
+        name: 'userId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+
+    User.hasMany(models.Following, {
+      as: 'follower',
+      foreignKey: {
+        name: 'followerId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+    User.hasMany(models.Following, {
+      as: 'followed',
+      foreignKey: {
+        name: 'followedId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+    User.hasMany(models.Purchased, {
+      foreignKey: {
+        name: 'userId',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+    User.hasMany(models.Notification, {
       foreignKey: {
         name: 'userId',
         allowNull: false

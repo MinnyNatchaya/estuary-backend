@@ -4,78 +4,95 @@ module.exports = (sequelize, DataTypes) => {
     {
       coverPic: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       externalLink: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       description: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       price: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.DECIMAL(15, 2),
+        allowNull: false,
       },
       hashtag: {
         type: DataTypes.STRING,
-        allowNull: true
-      }
+        allowNull: true,
+      },
     },
     {
-      underscored: true
-    }
+      underscored: true,
+    },
   );
 
-  Product.associate = models => {
+  Product.associate = (models) => {
     Product.belongsTo(models.ProductCategory, {
       foreignKey: {
         name: 'categoryId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
+    });
+
+    Product.belongsTo(models.User, {
+      foreignKey: {
+        name: 'userId',
+        allowNull: false,
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT',
     });
 
     Product.hasMany(models.ProductTag, {
       foreignKey: {
         name: 'productId',
-        allowNull: false
+        allowNull: false,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     Product.hasMany(models.Comment, {
       foreignKey: {
         name: 'productId',
-        allowNull: false
+        allowNull: true,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     Product.hasMany(models.Share, {
       foreignKey: {
         name: 'productId',
-        allowNull: false
+        allowNull: true,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
     });
 
     Product.hasMany(models.Like, {
       foreignKey: {
         name: 'productId',
-        allowNull: false
+        allowNull: true,
       },
       onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'RESTRICT',
+    });
+    Product.hasMany(models.Purchased, {
+      foreignKey: {
+        name: 'productId',
+        allowNull: false,
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT',
     });
   };
 

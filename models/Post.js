@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     Post.hasMany(models.Share, {
       foreignKey: {
         name: 'postId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     Post.hasMany(models.Like, {
       foreignKey: {
         name: 'postId',
-        allowNull: false
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
@@ -53,10 +53,28 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'RESTRICT'
     });
 
+    Post.belongsTo(models.Community, {
+      foreignKey: {
+        name: 'communityId',
+        allowNull: true
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+
     Post.hasMany(models.Comment, {
       foreignKey: {
         name: 'postId',
-        allowNull: false
+        allowNull: true
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+
+    Post.hasMany(models.Notification, {
+      foreignKey: {
+        name: 'postId',
+        allowNull: true
       },
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
