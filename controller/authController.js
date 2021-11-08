@@ -72,7 +72,7 @@ exports.login = async (req, res, next) => {
 			profilePic: user.profilePic,
 		};
 		const secretKey = process.env.JWT_SECRET_KEY;
-		const token = jwt.sign(payload, secretKey, { expiresIn: 60 * 60 * 24 });
+		const token = jwt.sign(payload, secretKey, { expiresIn: 60 * 60 * 24 * 30 });
 
 		res.json({ message: "login success", token });
 	} catch (err) {
